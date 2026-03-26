@@ -1,0 +1,41 @@
+{
+  "name": "ccprofiles",
+  "version": "1.0.0",
+  "description": "Multi-account profile manager for Claude Code CLI. Switch OAuth accounts without logout/login.",
+  "bin": {
+    "ccprofiles": "./bin/ccprofiles.cjs"
+  },
+  "main": "./lib/profile-manager.cjs",
+  "scripts": {
+    "test": "node --test test/profile-manager.test.cjs"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "profile",
+    "multi-account",
+    "oauth",
+    "cli",
+    "account-switcher"
+  ],
+  "author": "dattqh",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "skill/",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/user/ccprofiles.git"
+  },
+  "homepage": "https://github.com/user/ccprofiles#readme",
+  "bugs": {
+    "url": "https://github.com/user/ccprofiles/issues"
+  }
+}
