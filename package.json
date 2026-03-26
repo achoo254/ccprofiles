@@ -1,6 +1,6 @@
 {
   "name": "@achoo254/ccprofiles",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Multi-account profile manager for Claude Code CLI. Switch OAuth accounts without logout/login.",
   "bin": {
     "ccprofiles": "./bin/ccprofiles.cjs"
