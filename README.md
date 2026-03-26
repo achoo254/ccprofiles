@@ -47,6 +47,7 @@ ccprofiles list
 | `ccprofiles delete <name>` | Delete a profile |
 | `ccprofiles restore` | Rollback to pre-switch backup |
 | `ccprofiles clone <name>` | Export profile skeleton for another machine |
+| `ccprofiles dashboard` | Open browser dashboard to manage profiles |
 
 ## Claude Code Integration
 
@@ -59,6 +60,20 @@ After running `ccprofiles setup`, you can manage profiles directly in Claude Cod
 ```
 
 After switching, **exit Claude Code and reopen** to load the new credentials. Then run `/profile status` to verify.
+
+## Dashboard
+
+View and manage all profiles in your browser:
+
+```bash
+ccprofiles dashboard
+```
+
+Opens a local web dashboard with real-time updates. Features:
+- Profile cards with email, subscription type, and token status
+- Switch, check, save, and delete profiles from the browser
+- Dark/light theme based on OS preference
+- Auto-shutdown after 10 minutes idle
 
 ## How It Works
 

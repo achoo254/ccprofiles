@@ -41,6 +41,7 @@ switch (command) {
   case 'clone':     pm.cmdClone(name); break;
   case 'delete':    pm.cmdDelete(name); break;
   case 'restore':   pm.cmdRestore(); break;
+  case 'dashboard': pm.cmdDashboard(); break;
   default:
     console.error(`Unknown command: ${command}\n`);
     pm.showHelp();

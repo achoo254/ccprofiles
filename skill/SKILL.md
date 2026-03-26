@@ -1,7 +1,7 @@
 ---
 name: profile
 description: "Multi-account profile manager. Switch OAuth accounts + config without logout/login. Requires: npm install -g @achoo254/ccprofiles"
-argument-hint: "save|switch|list|status|whoami|check|delete|restore|clone [name]"
+argument-hint: "save|switch|list|status|whoami|check|delete|restore|clone|dashboard [name]"
 allowed-tools:
   - Bash
   - Read
@@ -26,6 +26,7 @@ Switch between multiple Claude Code OAuth accounts and configurations without lo
 | `/profile delete <name>` | Remove a profile |
 | `/profile restore` | Rollback to pre-switch backup |
 | `/profile clone <name>` | Export profile skeleton (no credentials) |
+| `/profile dashboard` | Open browser dashboard to manage profiles |
 
 ## Usage
 

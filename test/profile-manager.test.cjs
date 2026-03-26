@@ -249,3 +249,93 @@ describe('setup/uninstall', () => {
     assert.ok(!fs.existsSync(skillDir));
   });
 });
+
+// --- Dashboard server tests ---
+
+describe('dashboard server', () => {
+  const http = require('http');
+
+  /** Helper: make HTTP request and return parsed JSON */
+  function request(url) {
+    return new Promise((resolve, reject) => {
+      http.get(url, (res) => {
+        let data = '';
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => {
+          try { resolve({ status: res.statusCode, data: JSON.parse(data) }); }
+          catch { resolve({ status: res.statusCode, data }); }
+        });
+      }).on('error', reject);
+    });
+  }
+
+  it('should start on random port and respond', async () => {
+    const { startServer } = require('../lib/dashboard-server.cjs');
+    const info = await new Promise((resolve) => {
+      startServer({ testMode: true, onReady: resolve });
+    });
+
+    try {
+      assert.ok(info.port > 0, 'Should bind to a port');
+      assert.ok(info.token, 'Should generate a token');
+
+      // GET / with valid token should return HTML
+      const htmlRes = await new Promise((resolve, reject) => {
+        http.get(`http://127.0.0.1:${info.port}?token=${info.token}`, (res) => {
+          let data = '';
+          res.on('data', chunk => { data += chunk; });
+          res.on('end', () => resolve({ status: res.statusCode, data }));
+        }).on('error', reject);
+      });
+      assert.equal(htmlRes.status, 200);
+      assert.ok(htmlRes.data.includes('ccprofiles dashboard'));
+    } finally {
+      info.shutdown();
+    }
+  });
+
+  it('should reject requests without valid token', async () => {
+    const { startServer } = require('../lib/dashboard-server.cjs');
+    const info = await new Promise((resolve) => {
+      startServer({ testMode: true, onReady: resolve });
+    });
+
+    try {
+      const res = await request(`http://127.0.0.1:${info.port}/api/profiles?token=bad`);
+      assert.equal(res.status, 403);
+      assert.equal(res.data.ok, false);
+    } finally {
+      info.shutdown();
+    }
+  });
+
+  it('should list profiles via API', async () => {
+    const { startServer } = require('../lib/dashboard-server.cjs');
+    const info = await new Promise((resolve) => {
+      startServer({ testMode: true, onReady: resolve });
+    });
+
+    try {
+      const res = await request(`http://127.0.0.1:${info.port}/api/profiles?token=${info.token}`);
+      assert.equal(res.status, 200);
+      assert.equal(res.data.ok, true);
+      assert.ok(Array.isArray(res.data.data));
+    } finally {
+      info.shutdown();
+    }
+  });
+
+  it('should return 404 for unknown routes', async () => {
+    const { startServer } = require('../lib/dashboard-server.cjs');
+    const info = await new Promise((resolve) => {
+      startServer({ testMode: true, onReady: resolve });
+    });
+
+    try {
+      const res = await request(`http://127.0.0.1:${info.port}/api/unknown?token=${info.token}`);
+      assert.equal(res.status, 404);
+    } finally {
+      info.shutdown();
+    }
+  });
+});
