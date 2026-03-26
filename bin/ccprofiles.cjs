@@ -35,7 +35,7 @@ switch (command) {
   case 'save':      pm.cmdSave(name); break;
   case 'switch':    pm.cmdSwitch(name); break;
   case 'list':      pm.cmdList(); break;
-  case 'status':    pm.cmdStatus(); break;
+  case 'status':    pm.cmdStatus().catch(() => {}); break;
   case 'whoami':    pm.cmdWhoami(); break;
   case 'check':     pm.cmdCheck(); break;
   case 'clone':     pm.cmdClone(name); break;
