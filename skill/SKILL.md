@@ -1,6 +1,6 @@
 ---
 name: profile
-description: "Multi-account profile manager. Switch OAuth accounts + config without logout/login. Requires: npm install -g ccprofiles"
+description: "Multi-account profile manager. Switch OAuth accounts + config without logout/login. Requires: npm install -g @achoo254/ccprofiles"
 argument-hint: "save|switch|list|status|whoami|check|delete|restore|clone [name]"
 allowed-tools:
   - Bash
@@ -11,7 +11,7 @@ allowed-tools:
 
 Switch between multiple Claude Code OAuth accounts and configurations without logout/login.
 
-**Requires:** `npm install -g ccprofiles` then `ccprofiles setup`
+**Requires:** `npm install -g @achoo254/ccprofiles` then `ccprofiles setup`
 
 ## Quick Reference
 

@@ -2,14 +2,14 @@
 
 > Multi-account profile manager for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Switch OAuth accounts without logout/login.
 
-[![npm version](https://img.shields.io/npm/v/ccprofiles.svg)](https://www.npmjs.com/package/ccprofiles)
-[![license](https://img.shields.io/npm/l/ccprofiles.svg)](LICENSE)
-[![node](https://img.shields.io/node/v/ccprofiles.svg)](package.json)
+[![npm version](https://img.shields.io/npm/v/@achoo254/ccprofiles.svg)](https://www.npmjs.com/package/@achoo254/ccprofiles)
+[![license](https://img.shields.io/npm/l/@achoo254/ccprofiles.svg)](LICENSE)
+[![node](https://img.shields.io/node/v/@achoo254/ccprofiles.svg)](package.json)
 
 ## Install
 
 ```bash
-npm install -g ccprofiles
+npm install -g @achoo254/ccprofiles
 ccprofiles setup  # Install /profile skill into Claude Code
 ```
 
