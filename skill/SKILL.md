@@ -1,7 +1,7 @@
 ---
 name: profile
 description: "Multi-account profile manager. Switch OAuth accounts + config without logout/login. Requires: npm install -g ccprofiles"
-argument-hint: "add|save|switch|list|status|delete|restore [name] [--email <e>]"
+argument-hint: "save|switch|list|status|whoami|check|delete|restore|clone [name]"
 allowed-tools:
   - Bash
   - Read
@@ -17,44 +17,47 @@ Switch between multiple Claude Code OAuth accounts and configurations without lo
 
 | Command | Description |
 |---------|-------------|
-| `/profile add <name> [--email <e>]` | OAuth login + auto-save as new profile |
-| `/profile save <name>` | Snapshot current credentials + config |
-| `/profile switch <name>` | Switch to saved profile (needs /clear) |
+| `/profile save [name]` | Snapshot current credentials (auto-detects name from email) |
+| `/profile switch <name>` | Switch to saved profile (needs restart) |
 | `/profile list` | Show all profiles |
 | `/profile status` | Current profile details + token expiry |
+| `/profile whoami` | One-line active profile (script-friendly) |
+| `/profile check` | Verify token is still valid |
 | `/profile delete <name>` | Remove a profile |
 | `/profile restore` | Rollback to pre-switch backup |
+| `/profile clone <name>` | Export profile skeleton (no credentials) |
 
 ## Usage
 
 Run the ccprofiles CLI with the appropriate command:
 
 ```bash
-ccprofiles <command> [name] [--email <email>]
+ccprofiles <command> [name]
 ```
 
 ### First-time setup
 1. Run `save` to capture current account: `/profile save work`
-2. Run `add` for additional accounts: `/profile add personal --email me@gmail.com`
+2. Login to another account: `claude auth login --email me@gmail.com`
+3. Save that account: `/profile save personal`
 
 ### Switching accounts
 1. Run `switch`: `/profile switch personal`
-2. Run `/clear` to reload session with new credentials
+2. Exit Claude Code and reopen
+3. Verify: `/profile status` to confirm correct account
 
 ### After switch
-Always remind the user to run `/clear` to apply the new profile.
+Always remind the user to **exit and reopen Claude Code** to apply the new profile. Then suggest `/profile status` to verify.
 
 ## Profile Structure
 
 Each profile stored at `~/.claude/profiles/{name}/`:
 - `.credentials.json` — OAuth tokens
-- `settings-overlay.json` — Settings diff (deep merged on switch)
-- `CLAUDE.md` — Profile-specific instructions (optional)
-- `rules/` — Profile-specific rules (optional, additive)
+- `settings.json` — Full settings snapshot (replaced on switch)
 - `meta.json` — Name, email, subscription, timestamp
 
 ## Important Notes
 
-- **Token expiry**: Saved tokens may expire. If switch fails auth, user needs `claude auth login` again then `save`.
+- **Token expiry**: Saved tokens may expire. Use `check` to verify, then `claude auth login` + `save` to refresh.
 - **Backup**: Every switch creates `_base/` backup. Use `restore` to rollback.
-- **Settings merge**: Additive only — profile settings are merged into base, never removing existing keys.
+- **Settings**: Full replace on switch — each profile has its own complete settings snapshot.
+- **Cross-machine**: Use `clone` to export profile skeleton, then auth on new machine.

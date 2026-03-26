@@ -19,13 +19,16 @@ ccprofiles setup  # Install /profile skill into Claude Code
 # 1. Save your current account
 ccprofiles save work
 
-# 2. Add another account (opens browser for OAuth)
-ccprofiles add personal --email me@gmail.com
+# 2. Login to another account
+claude auth login --email me@gmail.com
 
-# 3. Switch between accounts
+# 3. Save that account
+ccprofiles save personal
+
+# 4. Switch between accounts
 ccprofiles switch work
 
-# 4. List all profiles
+# 5. List all profiles
 ccprofiles list
 ```
 
@@ -35,13 +38,15 @@ ccprofiles list
 |---------|-------------|
 | `ccprofiles setup` | Install `/profile` skill into Claude Code |
 | `ccprofiles uninstall` | Remove `/profile` skill |
-| `ccprofiles add <name> [--email <e>]` | OAuth login + save as new profile |
-| `ccprofiles save <name>` | Snapshot current credentials as profile |
+| `ccprofiles save [name]` | Snapshot current credentials (auto-detects name from email) |
 | `ccprofiles switch <name>` | Switch to a saved profile |
 | `ccprofiles list` | Show all profiles |
 | `ccprofiles status` | Current profile details + token expiry |
+| `ccprofiles whoami` | One-line active profile (script-friendly) |
+| `ccprofiles check` | Verify token is still valid |
 | `ccprofiles delete <name>` | Delete a profile |
 | `ccprofiles restore` | Rollback to pre-switch backup |
+| `ccprofiles clone <name>` | Export profile skeleton for another machine |
 
 ## Claude Code Integration
 
@@ -53,7 +58,7 @@ After running `ccprofiles setup`, you can manage profiles directly in Claude Cod
 > /profile save work
 ```
 
-After switching, run `/clear` in Claude Code to reload with new credentials.
+After switching, **exit Claude Code and reopen** to load the new credentials. Then run `/profile status` to verify.
 
 ## How It Works
 
@@ -65,20 +70,20 @@ Profiles are stored in `~/.claude/profiles/{name}/`:
 ├── _base/              # Auto-backup before each switch
 ├── work/
 │   ├── .credentials.json
-│   ├── settings-overlay.json
+│   ├── settings.json
 │   └── meta.json
 └── personal/
     ├── .credentials.json
-    ├── settings-overlay.json
+    ├── settings.json
     └── meta.json
 ```
 
-**Switching** copies the profile's credentials to `~/.claude/.credentials.json` and deep-merges settings (additive only — your existing settings are preserved).
+**Switching** copies the profile's credentials and settings to `~/.claude/` (full replace).
 
 ## FAQ
 
 **Q: What happens if a token expires?**
-Run `ccprofiles add <name>` again to re-authenticate and update the profile.
+Run `ccprofiles check` to verify. If expired, run `claude auth login` then `ccprofiles save <name>`.
 
 **Q: Is my data safe?**
 Every switch creates a backup in `_base/`. Use `ccprofiles restore` to rollback. Credentials are stored with the same security as Claude Code's own storage.
@@ -87,7 +92,7 @@ Every switch creates a backup in `_base/`. Use `ccprofiles restore` to rollback.
 Yes. Zero dependencies — uses only Node.js built-ins.
 
 **Q: Can I share profiles between machines?**
-Not yet. Planned for v1.1 (`ccprofiles export/import`).
+Use `ccprofiles clone <name>` to export a profile skeleton (settings + metadata, no credentials). Then auth on the new machine.
 
 ## Requirements
 

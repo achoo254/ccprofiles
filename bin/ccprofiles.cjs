@@ -32,11 +32,13 @@ if (args.includes('--help') || args.includes('-h') || !command) {
 switch (command) {
   case 'setup':     pm.cmdSetup(); break;
   case 'uninstall': pm.cmdUninstall(); break;
-  case 'add':       pm.cmdAdd(name, email); break;
   case 'save':      pm.cmdSave(name); break;
   case 'switch':    pm.cmdSwitch(name); break;
   case 'list':      pm.cmdList(); break;
   case 'status':    pm.cmdStatus(); break;
+  case 'whoami':    pm.cmdWhoami(); break;
+  case 'check':     pm.cmdCheck(); break;
+  case 'clone':     pm.cmdClone(name); break;
   case 'delete':    pm.cmdDelete(name); break;
   case 'restore':   pm.cmdRestore(); break;
   default:
